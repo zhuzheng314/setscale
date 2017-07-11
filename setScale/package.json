@@ -1,0 +1,11 @@
+{
+  "name": "setscale",
+  "version": "1.0.0",
+  "description": "Based on 1920 * 1080, for screen adaptation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "zhuzheng",
+  "license": "ISC"
+}
