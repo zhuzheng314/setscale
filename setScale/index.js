@@ -1,20 +1,38 @@
-var fun = function () {
-  var bodyCliWidth = document.body.clientWidth;
-  var bodyCliHeight = document.body.clientHeight;
-  var screenWrapDom = document.querySelector('#home');
-  var originPercent = 1920 / 1080;
-  var percent = bodyCliWidth / bodyCliHeight;
+function initScreen (w, h, id) {
+  const bdw = document.body.clientWidth
+  const bdh = document.body.clientHeight
+  const bdP = bdw / bdh // 屏幕宽高比
+  const screen = document.getElementById(id)
+  const p = w / h // 传入尺寸宽高比
 
-  if (percent > originPercent) {
-    screenWrapDom.style.cssText = 'transform:scale(' + bodyCliHeight / 1080 + ');' +
-              'transform-origin:0px 0px 0px;' +
-              'top:0px;' +
-              'left:' + (bodyCliWidth - bodyCliHeight * originPercent) / 2 + 'px;';
-  } else {
-    screenWrapDom.style.cssText = 'transform:scale(' + bodyCliWidth / 1920 + ');' +
-              'transform-origin:0px 0px 0px;' +
-              'top:' + (bodyCliHeight - bodyCliWidth / originPercent) / 2 + 'px;' +
-              'left:0';
+  if (bdP > p) { // 屏幕比较宽
+    screen.style.cssText = `
+      width: ${w}px;
+      height: ${h}px;
+      transform:scale(${bdh / h});
+      transform-origin:0px 0px 0px;
+      position: absolute;
+      top:0px;
+      left:${(bdw - (bdh * p)) / 2}px;
+    `
+  } else { // 屏幕比较窄
+    screen.style.cssText = `
+      width: ${w}px;
+      height: ${h}px;
+      transform:scale(${bdw / w});
+      transform-origin:0px 0px 0px;
+      position: absolute;
+      top:${(bdh - (bdw / p)) / 2}px;
+      left:0;
+    `
   }
+  window.addEventListener('resize', () => {
+    let timer
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      initScreen(w, h, id)
+    }, 300)
+  })
 }
-module.exports = fun
+
+export default initScreen
